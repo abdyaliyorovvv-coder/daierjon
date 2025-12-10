@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveLux — Премиум Автосалон</title>
+  <style>
+    /* === Основные стили === */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body, html { height:100%; font-family: 'Montserrat', sans-serif; color:#fff; }
+
+    :root {
+      --main-color: #00b4d8;
+      --bg-dark: #0a0a0a;
+      --bg-card: rgba(20,20,20,0.9);
+      --text-light: #eaeaea;
+    }
+
+    /* === Видеофон === */
+    #video-bg {
+      position: fixed;
+      top:0; left:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      z-index:-1;
+      filter: brightness(0.6);
+    }
+
+    /* === Хедер === */
+    header {
+      text-align:center;
+      padding: 50px 20px;
+      background: rgba(0,0,0,0.4);
+    }
+    header h1 {
+      font-size:3em;
+      color: var(--main-color);
+      text-shadow: 2px 2px 8px #000;
+    }
+
+    /* === Навигация === */
+    nav {
+      display:flex;
+      justify-content:center;
+      background: rgba(0,0,0,0.6);
+      position: sticky;
+      top:0;
+      z-index:10;
+    }
+    nav a {
+      color:#fff;
+      text-decoration:none;
+      padding:15px 25px;
+      font-weight:600;
+      transition:0.3s;
+    }
+    nav a:hover { color: var(--main-color); }
+
+    /* === Контейнер === */
+    .container { width:90%; max-width:1200px; margin:50px auto; }
+
+    /* === Поиск === */
+    .search-box { text-align:center; margin-bottom:30px; }
+    .search-box input {
+      width:60%; max-width:400px; padding:10px 15px;
+      border-radius:5px; border:none; background:#1a1a1a;
+      color:#fff; font-size:1em; outline:2px solid #222;
+    }
+
+    /* === Карточки авто === */
+    .cars {
+      display:flex; flex-wrap:wrap; gap:30px; justify-content:center;
+    }
+    .car-card {
+      background: var(--bg-card);
+      border-radius:12px;
+      overflow:hidden;
+      width:320px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow:0 0 15px rgba(0,0,0,0.6);
+      position:relative;
+    }
+    .car-card:hover {
+      transform: translateY(-5px);
+      box-shadow:0 0 25px rgba(0,180,216,0.6);
+    }
+    .car-card img {
+      width:100%; height:200px; object-fit:cover;
+    }
+    .car-info { padding:20px; }
+    .car-info h3 { color: var(--main-color); margin-bottom:10px; }
+    .car-info p { font-size:0.9em; color:#ccc; }
+    .price { font-weight:700; color: var(--main-color); margin-top:10px; }
+    .details-btn {
+      display:block; text-align:center; background: var(--main-color);
+      color:#000; margin:15px auto 0; padding:10px; border-radius:6px;
+      cursor:pointer; font-weight:bold; transition:0.3s;
+    }
+    .details-btn:hover { background:#0091ad; }
+
+    /* === Модальное окно === */
+    .modal {
+      display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:20;
+    }
+    .modal-content {
+      background: var(--bg-card);
+      padding:25px; border-radius:10px;
+      max-width:600px; width:90%; text-align:center;
+      box-shadow:0 0 20px var(--main-color);
+    }
+    .modal img { width:100%; border-radius:8px; margin-bottom:15px; }
+    .modal button {
+      background: var(--main-color); border:none; padding:10px 20px;
+      margin-top:15px; border-radius:5px; font-weight:bold; cursor:pointer;
+    }
+    .modal-close {
+      position:absolute; top:15px; right:25px; color:#fff; font-size:25px; cursor:pointer;
+    }
+
+    /* === Форма связи === */
+    form {
+      background: var(--bg-card); padding:30px; border-radius:12px;
+      box-shadow:0 0 20px rgba(0,0,0,0.6); max-width:500px; margin:0 auto;
+    }
+    form input, form textarea, form button {
+      width:100%; margin:10px 0; padding:12px; border:none; border-radius:5px;
+      font-family:'Montserrat', sans-serif;
+    }
+    form input, form textarea { background:#1e1e1e; color:#fff; }
+    form input:focus, form textarea:focus { outline:2px solid var(--main-color); }
+    form button {
+      background: var(--main-color); color:#000; font-weight:700; cursor:pointer;
+      transition:0.3s;
+    }
+    form button:hover { background:#0091ad; }
+
+    footer {
+      background:#111; color:#888; text-align:center; padding:20px;
+      border-top:1px solid #222; margin-top:60px;
+    }
+
+    @media(max-width:700px) {
+      .car-card { width:100%; }
+      .search-box input { width:90%; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- === Видеофон === -->
+  <video id="video-bg" autoplay muted loop>
+    <source src="https://cdn.pixabay.com/vimeo/542102870/fast_car_1080p.mp4" type="video/mp4">
+    Ваш браузер не поддерживает видео.
+  </video>
+
+  <!-- === Хедер === -->
+  <header>
+    <h1>DriveLux — Премиум Автосалон</h1>
+  </header>
+
+  <!-- === Навигация === -->
+  <nav>
+    <a href="#cars">Каталог</a>
+    <a href="#contact">Контакты</a>
+    <a href="#admin">Админ</a>
+  </nav>
+
+  <div class="container" id="cars">
+    <h2>Каталог автомобилей</h2>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Поиск по марке или модели...">
+    </div>
+    <div class="cars" id="carList">
+      <!-- Автомобили будут динамически вставляться сюда -->
+    </div>
+  </div>
+
+  <div class="container" id="contact">
+    <h2>Связаться с нами</h2>
+    <form onsubmit="sendForm(event)">
+      <input type="text" placeholder="Ваше имя" required>
+      <input type="email" placeholder="Ваш Email" required>
+      <textarea placeholder="Ваше сообщение" rows="5" required></textarea>
+      <button type="submit">Отправить</button>
+    </form>
+  </div>
+
+  <footer>
+    <p>© 2025 DriveLux — все права защищены</p>
+  </footer>
+
+  <!-- === Модалка авто === -->
+  <div class="modal" id="carModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <img id="modalImage" src="" alt="Car">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDetails"></p>
+      <p class="price" id="modalPrice"></p>
+      <button onclick="alert('Заявка на авто отправлена!')">Забронировать</button>
+    </div>
+  </div>
+
+</body>
+</html>
