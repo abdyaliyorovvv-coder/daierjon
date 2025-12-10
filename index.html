@@ -1,210 +1,73 @@
-<!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DriveLux вЂ” РџСЂРµРјРёСѓРј РђРІС‚РѕСЃР°Р»РѕРЅ</title>
-  <style>
-    /* === РћСЃРЅРѕРІРЅС‹Рµ СЃС‚РёР»Рё === */
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
-
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body, html { height:100%; font-family: 'Montserrat', sans-serif; color:#fff; }
-
-    :root {
-      --main-color: #00b4d8;
-      --bg-dark: #0a0a0a;
-      --bg-card: rgba(20,20,20,0.9);
-      --text-light: #eaeaea;
-    }
-
-    /* === Р’РёРґРµРѕС„РѕРЅ === */
-    #video-bg {
-      position: fixed;
-      top:0; left:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      z-index:-1;
-      filter: brightness(0.6);
-    }
-
-    /* === РҐРµРґРµСЂ === */
-    header {
-      text-align:center;
-      padding: 50px 20px;
-      background: rgba(0,0,0,0.4);
-    }
-    header h1 {
-      font-size:3em;
-      color: var(--main-color);
-      text-shadow: 2px 2px 8px #000;
-    }
-
-    /* === РќР°РІРёРіР°С†РёСЏ === */
-    nav {
-      display:flex;
-      justify-content:center;
-      background: rgba(0,0,0,0.6);
-      position: sticky;
-      top:0;
-      z-index:10;
-    }
-    nav a {
-      color:#fff;
-      text-decoration:none;
-      padding:15px 25px;
-      font-weight:600;
-      transition:0.3s;
-    }
-    nav a:hover { color: var(--main-color); }
-
-    /* === РљРѕРЅС‚РµР№РЅРµСЂ === */
-    .container { width:90%; max-width:1200px; margin:50px auto; }
-
-    /* === РџРѕРёСЃРє === */
-    .search-box { text-align:center; margin-bottom:30px; }
-    .search-box input {
-      width:60%; max-width:400px; padding:10px 15px;
-      border-radius:5px; border:none; background:#1a1a1a;
-      color:#fff; font-size:1em; outline:2px solid #222;
-    }
-
-    /* === РљР°СЂС‚РѕС‡РєРё Р°РІС‚Рѕ === */
-    .cars {
-      display:flex; flex-wrap:wrap; gap:30px; justify-content:center;
-    }
-    .car-card {
-      background: var(--bg-card);
-      border-radius:12px;
-      overflow:hidden;
-      width:320px;
-      transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow:0 0 15px rgba(0,0,0,0.6);
-      position:relative;
-    }
-    .car-card:hover {
-      transform: translateY(-5px);
-      box-shadow:0 0 25px rgba(0,180,216,0.6);
-    }
-    .car-card img {
-      width:100%; height:200px; object-fit:cover;
-    }
-    .car-info { padding:20px; }
-    .car-info h3 { color: var(--main-color); margin-bottom:10px; }
-    .car-info p { font-size:0.9em; color:#ccc; }
-    .price { font-weight:700; color: var(--main-color); margin-top:10px; }
-    .details-btn {
-      display:block; text-align:center; background: var(--main-color);
-      color:#000; margin:15px auto 0; padding:10px; border-radius:6px;
-      cursor:pointer; font-weight:bold; transition:0.3s;
-    }
-    .details-btn:hover { background:#0091ad; }
-
-    /* === РњРѕРґР°Р»СЊРЅРѕРµ РѕРєРЅРѕ === */
-    .modal {
-      display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-      background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:20;
-    }
-    .modal-content {
-      background: var(--bg-card);
-      padding:25px; border-radius:10px;
-      max-width:600px; width:90%; text-align:center;
-      box-shadow:0 0 20px var(--main-color);
-    }
-    .modal img { width:100%; border-radius:8px; margin-bottom:15px; }
-    .modal button {
-      background: var(--main-color); border:none; padding:10px 20px;
-      margin-top:15px; border-radius:5px; font-weight:bold; cursor:pointer;
-    }
-    .modal-close {
-      position:absolute; top:15px; right:25px; color:#fff; font-size:25px; cursor:pointer;
-    }
-
-    /* === Р¤РѕСЂРјР° СЃРІСЏР·Рё === */
-    form {
-      background: var(--bg-card); padding:30px; border-radius:12px;
-      box-shadow:0 0 20px rgba(0,0,0,0.6); max-width:500px; margin:0 auto;
-    }
-    form input, form textarea, form button {
-      width:100%; margin:10px 0; padding:12px; border:none; border-radius:5px;
-      font-family:'Montserrat', sans-serif;
-    }
-    form input, form textarea { background:#1e1e1e; color:#fff; }
-    form input:focus, form textarea:focus { outline:2px solid var(--main-color); }
-    form button {
-      background: var(--main-color); color:#000; font-weight:700; cursor:pointer;
-      transition:0.3s;
-    }
-    form button:hover { background:#0091ad; }
-
-    footer {
-      background:#111; color:#888; text-align:center; padding:20px;
-      border-top:1px solid #222; margin-top:60px;
-    }
-
-    @media(max-width:700px) {
-      .car-card { width:100%; }
-      .search-box input { width:90%; }
-    }
-
-  </style>
+<title> сомонаи ман </title>
 </head>
-<body>
+<body bgcolor="ffffff">
+формаи бакайдгири
+<form>
+ном<input name ="nom"size="40"><br>
+насаб<input name ="nasab"size="29"><br>
+</form><br>
+<header>
+<h1> добро пожаловат </h1>
+<nav>
+<a href="#about">о нас </a>
+<a href="#services">услуги</a>
+<a href="#contact">контакти</a>
+</nav>
+</header>
 
-  <!-- === Р’РёРґРµРѕС„РѕРЅ === -->
-  <video id="video-bg" autoplay muted loop>
-    <source src="https://cdn.pixabay.com/vimeo/542102870/fast_car_1080p.mp4" type="video/mp4">
-    Р’Р°С€ Р±СЂР°СѓР·РµСЂ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РІРёРґРµРѕ.
-  </video>
+<main>
+<section id="about">
+<h2> о нас </h2>
+<p> мы создаем современние и бистрые сайти которые отлично работают на всех устройствах. Наш подход-простота стиль и эфективность. </p>
+</section>
+<section id ="services">
+< h2>наши услуги </h2>
+</ul>
+<li>разработка сайтов под ключ</li>
+<li>дизайн и брендинг</li>
+<li>SEO и продвижение</li>
+</ul>
+<a href="#contact" class="btn">заказать</a>
+</section>
 
-  <!-- === РҐРµРґРµСЂ === -->
-  <header>
-    <h1>DriveLux вЂ” РџСЂРµРјРёСѓРј РђРІС‚РѕСЃР°Р»РѕРЅ</h1>
-  </header>
+<section id="contact">
+<h2>связатсяь с нами </h2>
+<form onsubmit="send form(event)">
+<label> имя :</label></br>
+<input type="text" id="name" required style="width:100%;padding:8px;"><br><br>
+<label>Email:</label><br>
+<input type="email"required style="width:100%;padding:8px;"><br><br>
 
-  <!-- === РќР°РІРёРіР°С†РёСЏ === -->
-  <nav>
-    <a href="#cars">РљР°С‚Р°Р»РѕРі</a>
-    <a href="#contact">РљРѕРЅС‚Р°РєС‚С‹</a>
-    <a href="#admin">РђРґРјРёРЅ</a>
-  </nav>
+<label>сообщение:</label><br>
+<textarea id="message" rows="4"required style="width:100%;padding:8px;"></textarea><br><br>
+</script>
+<input type=radio Name=modem value="курси 1" checked>курси 1<br>
+<input type=radio Name=modem value="курси 2" checked>курси 2<br>
+<input type=radio Name=modem value="курси 3" checked>курси 3<br>
+<input type=radio Name=modem value="курси 4" checked>курси 4<br>
 
-  <div class="container" id="cars">
-    <h2>РљР°С‚Р°Р»РѕРі Р°РІС‚РѕРјРѕР±РёР»РµР№</h2>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="РџРѕРёСЃРє РїРѕ РјР°СЂРєРµ РёР»Рё РјРѕРґРµР»Рё...">
-    </div>
-    <div class="cars" id="carList">
-      <!-- РђРІС‚РѕРјРѕР±РёР»Рё Р±СѓРґСѓС‚ РґРёРЅР°РјРёС‡РµСЃРєРё РІСЃС‚Р°РІР»СЏС‚СЊСЃСЏ СЃСЋРґР° -->
-    </div>
-  </div>
+<form>
+<select name =group>
 
-  <div class="container" id="contact">
-    <h2>РЎРІСЏР·Р°С‚СЊСЃСЏ СЃ РЅР°РјРё</h2>
-    <form onsubmit="sendForm(event)">
-      <input type="text" placeholder="Р’Р°С€Рµ РёРјСЏ" required>
-      <input type="email" placeholder="Р’Р°С€ Email" required>
-      <textarea placeholder="Р’Р°С€Рµ СЃРѕРѕР±С‰РµРЅРёРµ" rows="5" required></textarea>
-      <button type="submit">РћС‚РїСЂР°РІРёС‚СЊ</button>
-    </form>
-  </div>
-
-  <footer>
-    <p>В© 2025 DriveLux вЂ” РІСЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹</p>
-  </footer>
-
-  <!-- === РњРѕРґР°Р»РєР° Р°РІС‚Рѕ === -->
-  <div class="modal" id="carModal">
-    <div class="modal-content">
-      <span class="modal-close" onclick="closeModal()">&times;</span>
-      <img id="modalImage" src="" alt="Car">
-      <h3 id="modalTitle"></h3>
-      <p id="modalDetails"></p>
-      <p class="price" id="modalPrice"></p>
-      <button onclick="alert('Р—Р°СЏРІРєР° РЅР° Р°РІС‚Рѕ РѕС‚РїСЂР°РІР»РµРЅР°!')">Р—Р°Р±СЂРѕРЅРёСЂРѕРІР°С‚СЊ</button>
-    </div>
-  </div>
-
+<option> 1-31.03.04
+<option> 1-35.01.04
+<option> 1-33.09.04
+<option> 1-44.07.04
+</select>
+</form> <br>
+<form>
+<input type=checkbox name=comp value="русский"> русский <br>
+<input type=checkbox name=comp value="русский"> английский <br>
+<input type=checkbox name=comp value="неметский"> неметский <br>
+<input type=checkbox name=comp value="китаский"> китаский <br>
+</form>
+<form>
+ Поля для ввода пороля 
+<input type =password name =text value =""size=40 maxleght=40>
+<input type =time name=text value ="size" <br>
+<input type =range name=text value "size" <br>
+</form>
 </body>
 </html>
